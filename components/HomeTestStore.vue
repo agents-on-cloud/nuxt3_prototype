@@ -182,9 +182,9 @@ export default {
       this.pokimons = mainStore.getPokimons;
     },
     getColor(calories) {
-      if (calories > 400) return "red";
-      else if (calories > 200) return "orange";
-      else return "green";
+      if (calories > 400) return "#FF0000";
+      else if (calories > 200) return "#FFA500";
+      else return "#00FF00";
     },
   },
 };
