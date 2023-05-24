@@ -1,6 +1,30 @@
 <template>
-  <div class="text-center conainer">
+  <div class="conainer">
     <v-data-table :headers="headers" :items="desserts" class="elevation-1">
+      <template v-slot:top>
+        <v-toolbar>
+          <v-toolbar-title>Wee can table add header here</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn class="ma-1 mr-3" color="#4481eb" icon>
+            <v-icon colo> mdi-refresh </v-icon>
+            <p>check mdi-icons</p>
+          </v-btn>
+        </v-toolbar>
+      </template>
+
+      <template v-slot:headers="{ headerProps }">
+        <tr>
+          <th
+            v-for="(header, index) in headers"
+            :key="index"
+            :sortable="header.sortable"
+            class="table-header"
+          >
+            <span :class="header.class">{{ header.title }}</span>
+          </th>
+        </tr>
+      </template>
+
       <template v-slot:item.calories="{ item }">
         <v-chip :color="getColor(item.columns.calories)">
           HERE ID {{ item.columns.calories }}
@@ -9,8 +33,19 @@
       <template v-slot:item.name="{ item }">
         <p class="hover-clickable">{{ item.columns.name }}</p>
       </template>
+      <!-- <template v-slot:bottom>
+    </template>  -->
     </v-data-table>
 
+    <v-pagination
+      theme="dark"
+      active-color="#194569"
+      color="white"
+      :border="true"
+      density="comfortable"
+      :length="6"
+      variant="elevated"
+    ></v-pagination>
     <p>Local State: {{ testNumber }} ----- Store State: {{ counter }}</p>
 
     <div>
@@ -37,6 +72,8 @@ let mainStore = {};
 export default {
   data() {
     return {
+      pages: 5,
+      sortBy: [{ key: "calories", order: "desc" }],
       testNumber: 0,
 
       headers: [
@@ -45,32 +82,37 @@ export default {
           align: "start",
           sortable: false,
           key: "name",
-          class: "primary white--text subtitle-1",
+          class: "primary white--text subtitle-1 text-color-test",
         },
         {
           title: "Calories",
           key: "calories",
-          class: "primary white--text subtitle-1",
+          sortable: true,
+          class: "primary white--text subtitle-1 text-color-test",
         },
         {
           title: "Fat (g)",
           key: "fat",
-          class: "primary white--text subtitle-1",
+          sortable: true,
+          class: "primary white--text subtitle-1 text-color-test",
         },
         {
           title: "Carbs (g)",
           key: "carbs",
-          class: "primary white--text subtitle-1",
+          sortable: true,
+          class: "primary white--text subtitle-1 text-color-test",
         },
         {
           title: "Protein (g)",
           key: "protein",
-          class: "primary white--text subtitle-1",
+          sortable: true,
+          class: "primary white--text subtitle-1 text-color-test",
         },
         {
           title: "Iron (%)",
           key: "iron",
-          class: "primary white--text subtitle-1",
+          sortable: true,
+          class: "primary white--text subtitle-1 text-color-test",
         },
       ],
       desserts: [
@@ -186,6 +228,24 @@ export default {
       else if (calories > 200) return "#FFA500";
       else return "#00FF00";
     },
+
+    updateSortBy(value) {
+      this.sortBy = value;
+    },
+    updateSortDesc(value) {
+      this.sortDesc = value;
+    },
+    sortByColumn(column) {
+      if (this.sortBy === column) {
+        this.sortDesc = !this.sortDesc;
+      } else {
+        this.sortBy = column;
+        this.sortDesc = false;
+      }
+    },
+    isSortedBy(column) {
+      return this.sortBy === column;
+    },
   },
 };
 </script>
@@ -214,5 +274,11 @@ export default {
 }
 .hover-clickable:hover {
   --_p: 0%;
+}
+.text-color-test {
+  color: white !important;
+}
+.table-header {
+  background-color: #194569 !important;
 }
 </style>

@@ -1,3 +1,4 @@
+import "vuetify/styles";
 import { createVuetify } from "vuetify";
 import { aliases, mdi } from "vuetify/lib/iconsets/mdi-svg";
 import * as components from "vuetify/components";
