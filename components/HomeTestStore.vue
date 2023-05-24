@@ -77,6 +77,7 @@ let mainStore = {};
 export default {
   data() {
     return {
+      // we can use array for multi sort
       sortBy: {},
       testNumber: 0,
 
