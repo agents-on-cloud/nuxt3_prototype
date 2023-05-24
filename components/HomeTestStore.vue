@@ -1,12 +1,17 @@
 <template>
   <div class="conainer">
-    <v-data-table :headers="headers" :items="desserts" class="elevation-1">
+    <v-data-table
+      :headers="headers"
+      :items="desserts"
+      class="elevation-1"
+      :sort-by="sortBy"
+    >
       <template v-slot:top>
         <v-toolbar>
           <v-toolbar-title>Wee can table add header here</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn class="ma-1 mr-3" color="#4481eb" icon>
-            <v-icon colo> mdi-refresh </v-icon>
+            <!-- <v-icon colo> mdi-refresh </v-icon> -->
             <p>check mdi-icons</p>
           </v-btn>
         </v-toolbar>
@@ -17,7 +22,7 @@
           <th
             v-for="(header, index) in headers"
             :key="index"
-            :sortable="header.sortable"
+            @click="sortByColumn(header.key)"
             class="table-header"
           >
             <span :class="header.class">{{ header.title }}</span>
@@ -72,8 +77,7 @@ let mainStore = {};
 export default {
   data() {
     return {
-      pages: 5,
-      sortBy: [{ key: "calories", order: "desc" }],
+      sortBy: {},
       testNumber: 0,
 
       headers: [
@@ -228,23 +232,14 @@ export default {
       else if (calories > 200) return "#FFA500";
       else return "#00FF00";
     },
-
-    updateSortBy(value) {
-      this.sortBy = value;
-    },
-    updateSortDesc(value) {
-      this.sortDesc = value;
-    },
-    sortByColumn(column) {
-      if (this.sortBy === column) {
-        this.sortDesc = !this.sortDesc;
-      } else {
-        this.sortBy = column;
-        this.sortDesc = false;
+    sortByColumn(key) {
+      let order = "asc";
+      if (key == this.sortBy?.key) {
+        console.log(this.sortBy.order, "oldOrder");
+        order = this.sortBy.order == "asc" ? "desc" : "asc";
       }
-    },
-    isSortedBy(column) {
-      return this.sortBy === column;
+      this.sortBy = { key, order };
+      console.log(this.sortBy, "sort by");
     },
   },
 };
